@@ -1,3 +1,4 @@
+package com.sds.ioffice.common.adm.utl;
 
 import com.google.common.collect.Maps;
 import org.junit.Before;
@@ -32,41 +33,41 @@ public class MapSearcherTest {
 
 	@Test
 	public void getMap() {
-		Map<String,Object> mapType = new MapSearcher<>(Map.class).get(test,"nodes.tasks.status");
+		Object mapType = new MapSearcher<>().get(test,"nodes.tasks.status");
 		Assert.assertEquals(mapType.getClass().getName(), HashMap.class.getName());
 	}
 	
 	@Test
 	public void getString() {
-		Object stringType = new MapSearcher<>(String.class).get(test,"nodes.tasks.status.b");
+		Object stringType = new MapSearcher<>().get(test,"nodes.tasks.status.b");
 		Assert.assertEquals(stringType.getClass().getName(), String.class.getName());
 		Assert.assertEquals((String) stringType, "ha");
 	}
 
 	@Test
 	public void getBool() {
-		Object boolType = new MapSearcher<>(Boolean.class).get(test,"nodes.tasks.status.c");
+		Object boolType = new MapSearcher<>().get(test,"nodes.tasks.status.c");
 		Assert.assertEquals(boolType.getClass().getName(), Boolean.class.getName());
 		Assert.assertEquals((boolean) boolType, false);
 	}
 
 	@Test
 	public void getInteger() {
-		Object intType = new MapSearcher<>(Integer.class).get(test,"nodes.tasks.status.a");
+		Object intType = new MapSearcher<Object>().get(test,"nodes.tasks.status.a");
 		Assert.assertEquals(intType.getClass().getName(), Integer.class.getName());
 		Assert.assertEquals((int) intType, 1);
 	}
 
 	@Test
 	public void getDefault() {
-		Integer result = new MapSearcher<>(Integer.class).getOrDeafult(test,"reqrewqr", 1);
+		Integer result = new MapSearcher<Integer>().getOrDeafult(test,"a.b.c.d.e", 1);
 		Assert.assertEquals(result.intValue(), 1);
 	}
 
 	@Test
 	public void wrong_path_first_element() {
 		try{
-			new MapSearcher<>(Integer.class).get(test,"qwe.qwe.qwe");
+			new MapSearcher<>().get(test,"qwe.qwe.qwe");
 		}catch (Exception e){
 			LOGGER.info("wrong_path_first_element - error message : {}", e.getMessage());
 			Assert.assertEquals(e.getClass(), IllegalArgumentException.class);
@@ -76,7 +77,7 @@ public class MapSearcherTest {
 	@Test
 	public void wrong_path_second_element() {
 		try{
-			new MapSearcher<>(Integer.class).get(test,"nodes.qwe.qwe");
+			new MapSearcher<>().get(test,"nodes.qwe.qwe");
 		}catch (Exception e){
 			LOGGER.info("wrong_path_second_element - error message : {}", e.getMessage());
 			Assert.assertEquals(e.getClass(), IllegalArgumentException.class);
@@ -86,7 +87,7 @@ public class MapSearcherTest {
 	@Test
 	public void wrong_return_type() {
 		try{
-			new MapSearcher<>(List.class).get(test,"nodes.tasks.status.c");
+			new MapSearcher<>().get(test,"nodes.tasks.status.c");
 		}catch (Exception e){
 			LOGGER.info("wrong_return_type - error message : {}", e.getMessage());
 			Assert.assertEquals(e.getClass(), IllegalArgumentException.class);

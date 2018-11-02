@@ -1,17 +1,11 @@
+package com.sds.ioffice.common.adm.utl;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class MapSearcher<T> {
 
-    final private String SEPARATOR = "\\.";
-    private Class<T> type;
-
-    private MapSearcher(){ }
-
-    public MapSearcher(Class<T> type){
-        this.type = type;
-    }
+    final static private String SEPARATOR = "\\.";
 
     public T get(Map<String,Object> target, String keyPath){
 
@@ -34,13 +28,15 @@ public class MapSearcher<T> {
         }
 
         // last item check
-        int lastIndex = splited.length-1;
+        int lastIndex = splited.length - 1;
         Object searched = temp.get(splited[lastIndex]);
-        if(!this.type.isInstance(searched)){
+
+        try{
+            return (T) searched;
+        }catch(Exception e){
             throw new IllegalArgumentException("type is wrong. " +splited[lastIndex]+ "'s value isn't specified type.");
         }
 
-        return this.type.cast(searched);
     }
 
     public T getOrDeafult(Map<String,Object> target, String keyPath, T defaultValue){
